@@ -1,0 +1,73 @@
+{
+  "repo": "copper-gfx-ray-scope",
+  "language": "Dart",
+  "category": "Graphics",
+  "goal": "Design a Dart verification harness for ray systems, covering protocol validation, framed sample traffic, and failure-oriented tests.",
+  "review_model": {
+    "terms": [
+      "geometry span",
+      "atlas pressure",
+      "shader drift",
+      "render budget"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "geometry span",
+      "signal": 46,
+      "slack": 54,
+      "drag": 25,
+      "confidence": 76,
+      "score": 147,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "atlas pressure",
+      "signal": 69,
+      "slack": 50,
+      "drag": 20,
+      "confidence": 90,
+      "score": 218,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "shader drift",
+      "signal": 59,
+      "slack": 21,
+      "drag": 31,
+      "confidence": 68,
+      "score": 114,
+      "lane": "watch"
+    },
+    {
+      "name": "recovery",
+      "focus": "render budget",
+      "signal": 86,
+      "slack": 44,
+      "drag": 32,
+      "confidence": 88,
+      "score": 208,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "geometry span",
+      "signal": 61,
+      "slack": 21,
+      "drag": 21,
+      "confidence": 93,
+      "score": 173,
+      "lane": "ship"
+    }
+  ]
+}

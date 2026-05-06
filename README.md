@@ -1,68 +1,40 @@
 # copper-gfx-ray-scope
 
-`copper-gfx-ray-scope` packages a practical graphics exercise in Dart. The emphasis is on deterministic behavior, a small public API, and examples that explain the tradeoffs.
+`copper-gfx-ray-scope` keeps a focused Dart implementation around graphics. The project goal is to design a Dart verification harness for ray systems, covering protocol validation, framed sample traffic, and failure-oriented tests.
 
-## How I Read Copper Gfx Ray Scope
+## Problem It Tries To Make Smaller
 
-The useful thing to inspect here is how the same score rule is represented in code, metadata, and examples. If those three pieces disagree, the audit script should make the drift visible.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Main Behaviors
+## Copper Gfx Ray Scope Review Notes
 
-- Includes extended examples for render inputs, including `surge` and `degraded`.
-- Documents stable output tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+`stress` and `edge` are the cases worth reading first. They show the optimistic and cautious ends of the fixture.
 
-## Problem Shape
+## Working Pieces
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+- `fixtures/domain_review.csv` adds cases for geometry span and atlas pressure.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/copper-gfx-ray-walkthrough.md` walks through the case spread.
+- The Dart code includes a review path for `atlas pressure` and `shader drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Repository Map
+## Design Notes
 
-- `lib`: library code
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
+The repository has two validation layers: the original compact policy fixture and the domain review fixture. They are separate so one can change without hiding failures in the other.
 
-## Internal Model
+The Dart implementation avoids hidden state so fixture changes are easy to reason about.
 
-The interesting part is the boundary between accepted and reviewed scenarios. Extended examples sit near that boundary so future edits can show whether the model became more permissive or more cautious. The Dart project uses a small library and assertion script, avoiding package dependencies for verification.
-
-## How To Run It
+## Example Run
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Tests
 
-## Scenario Walkthrough
+The check exercises the source code and the review fixture. `stress` is the high score at 218; `edge` is the low score at 114.
 
-`surge` is the first example I would inspect because it lands on the `accept` path with a score of 264. The broader file also keeps `degraded` at 33 and `surge` at 264, which gives the model a useful low-to-high spread.
+## Known Limits
 
-## Validation
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Known Edges
-
-The fixture set is deliberately small. That keeps the review surface clear, but it also means the model should not be treated as a complete domain simulator.
-
-## Follow-Up Work
-
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add one more graphics fixture that focuses on a malformed or borderline input.
-
-## Run It Locally
-
-Install Dart and run the commands from the repository root. The project does not need credentials or a hosted service.
+This remains a local project with deterministic fixtures. It does not depend on credentials, hosted services, or live data. Future work should add richer malformed inputs before widening the public API.
